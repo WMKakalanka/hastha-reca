@@ -1,397 +1,430 @@
 <!DOCTYPE html>
 <html lang="si">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Valentine's Giveaway</title>
-<style>
-  /* --- General Styling --- */
-  body {
-    margin: 0;
-    padding: 10px;
-    background-color: #e9ebee;
-    font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
-  }
-  .viral-container {
-    max-width: 600px;
-    margin: 0 auto;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    overflow: hidden;
-  }
-   
-  /* --- HEADER IMAGE (UPDATED) --- */
-  .header-img {
-    width: 100%;
-    height: auto; /* Auto height to keep aspect ratio */
-    min-height: 200px;
-    background-color: #a41018; /* Dark red fallback */
-    position: relative;
-    overflow: hidden;
-  }
-   
-  .header-img img {
-      width: 100%;
-      height: auto;
-      display: block;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Royal Palmistry | මහා රාජ යෝග</title>
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;600;800&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f0c29;
+            --bg-light: #302b63;
+            --gold: #FFD700;
+            --gold-dim: #b89600;
+            --text: #ffffff;
+            --card: rgba(20, 20, 40, 0.85);
+            --accent: #ff0055;
+        }
 
-  /* Optional Badge */
-  .header-img::after {
-      content: 'LIVE EVENT';
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: #ffffff;
-      color: #a41018;
-      padding: 4px 8px;
-      font-weight: bold;
-      border-radius: 4px;
-      font-size: 12px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-      animation: pulse-red 2s infinite;
-  }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* --- Content Body --- */
-  .content-body { padding: 20px; text-align: center; }
+        body {
+            background: linear-gradient(135deg, var(--bg-dark), var(--bg-light), #000);
+            color: var(--text);
+            font-family: 'Abhaya Libre', serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
 
-  h2 { color: #1c1e21; margin-top: 5px; font-size: 22px; line-height: 1.3; }
-  p { color: #606770; font-size: 16px; margin-bottom: 25px; line-height: 1.5; }
+        /* Container */
+        .app-frame {
+            width: 100%;
+            max-width: 480px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            padding: 1.5rem;
+            background: rgba(15, 12, 41, 0.95);
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
 
-  /* --- Buttons --- */
-  .btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 16px;
-    font-size: 18px;
-    font-weight: bold;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-bottom: 12px;
-    text-decoration: none;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    transition: transform 0.1s;
-    box-sizing: border-box; /* Ensures padding doesn't affect width */
-  }
-  .btn:active { transform: scale(0.98); }
+        h1 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1.6rem;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            margin-bottom: 5px;
+            line-height: 1.2;
+        }
 
-  .btn-continue { background-color: #1877f2; }
-  .btn-whatsapp { background-color: #25D366; gap: 10px; }
-   
-  /* --- LOADING SCREEN --- */
-  .loader-container {
-    display: none;
-    padding: 40px 20px;
-    text-align: center;
-  }
-  .spinner {
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #1877f2;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 15px auto;
-  }
-  .loading-text { font-weight: 600; color: #555; font-size: 16px; }
+        /* Scanner Box */
+        .scanner-box {
+            position: relative;
+            height: 320px;
+            border: 2px dashed var(--gold-dim);
+            border-radius: 15px;
+            margin-top: 20px;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .scanner-box:active { transform: scale(0.98); border-color: #fff; }
 
-  /* --- UNLOCK BUTTON --- */
-  .btn-unlock { 
-      background-color: #dadde1; 
-      color: #bec3c9;
-      pointer-events: none; 
-      box-shadow: none;
-  } 
-  .btn-unlock.active {
-      background: linear-gradient(45deg, #FF512F, #DD2476);
-      color: white;
-      pointer-events: auto;
-      font-weight: 800;
-      text-transform: uppercase;
-      animation: pulse 1.5s infinite;
-      box-shadow: 0 4px 15px rgba(221, 36, 118, 0.4);
-  }
+        #previewImg {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            display: none;
+            z-index: 1;
+            filter: contrast(1.1) brightness(1.1);
+        }
 
-  /* --- Animations --- */
-  @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-  @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
-  @keyframes pulse-red { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+        .upload-text { z-index: 2; pointer-events: none; color: #ccc; }
+        .icon { font-size: 3.5rem; display: block; margin-bottom: 10px; color: var(--gold); text-shadow: 0 0 15px var(--gold); }
 
-  /* --- Progress Bar --- */
-  .progress-wrapper {
-    width: 100%;
-    background-color: #f0f2f5;
-    border-radius: 10px;
-    height: 14px;
-    margin: 15px 0 5px 0;
-    overflow: hidden;
-    display: none;
-    border: 1px solid #ddd;
-  }
-  .progress-bar { height: 100%; width: 0%; background-color: #25D366; transition: width 0.3s ease; }
-  #step-2 { display: none; }
-   
-  /* --- COMMENTS SECTION --- */
-  .comments-section {
-    background: #f0f2f5;
-    padding: 15px;
-    border-top: 1px solid #ddd;
-  }
-  .comment-header { 
-      font-weight: bold; color: #65676b; margin-bottom: 15px; 
-      display: flex; justify-content: space-between; font-size: 14px;
-  }
+        /* Share Progress Bar Styles */
+        .share-progress-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            overflow: hidden;
+            display: none;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+        
+        .share-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #FFD700, #ffaa00);
+            box-shadow: 0 0 10px #FFD700;
+            transition: width 0.4s ease-out;
+        }
 
-  /* Comment Row */
-  .comment-row { display: flex; gap: 8px; margin-bottom: 10px; text-align: left; }
-  .avatar { width: 36px; height: 36px; background: #ddd; border-radius: 50%; flex-shrink: 0; }
-  .bubble {
-    background: white;
-    padding: 8px 12px;
-    border-radius: 18px;
-    display: inline-block;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-  }
-  .user-name { font-weight: bold; font-size: 13px; color: #050505; display: block; margin-bottom: 2px; }
-  .user-text { font-size: 14px; color: #050505; line-height: 1.3; }
-   
-  .comment-actions { 
-    margin-left: 52px; margin-top: -5px; margin-bottom: 10px; 
-    font-size: 12px; color: #65676b; font-weight: 600; text-align: left;
-  }
-  .comment-actions span { margin-right: 12px; cursor: pointer; }
+        /* Analyze Button */
+        .btn-gold {
+            background: linear-gradient(90deg, #FFD700, #E0AA3E);
+            color: #000; border: none; padding: 16px;
+            width: 100%; border-radius: 50px;
+            font-size: 1.1rem; font-weight: 800;
+            font-family: 'Cinzel', serif;
+            margin-top: 10px; cursor: pointer;
+            opacity: 0.5; pointer-events: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .btn-gold.active { opacity: 1; pointer-events: auto; box-shadow: 0 0 25px rgba(255, 215, 0, 0.4); }
 
-  /* Reply Indentation */
-  .reply-row { margin-left: 44px; }
-  .reply-row .avatar { width: 28px; height: 28px; }
+        /* Loader (Results) */
+        .loader-container {
+            width: 100%; height: 6px; background: #333; margin-top: 20px;
+            border-radius: 3px; display: none; overflow: hidden;
+        }
+        .loader-bar {
+            width: 0%; height: 100%; background: linear-gradient(90deg, var(--gold), #fff);
+            transition: width 2s ease-in-out;
+        }
 
-  /* --- Write Comment --- */
-  .input-area {
-      display: flex; gap: 8px; margin-top: 15px; border-top: 1px solid #ccc; padding-top: 15px;
-  }
-  .input-field {
-      width: 100%; background: white; border: 1px solid #ccc; border-radius: 20px;
-      padding: 8px 12px; font-size: 14px; outline: none;
-  }
-  
-  /* --- New Phone Input Style --- */
-  .phone-input {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      box-sizing: border-box;
-      margin-bottom: 15px;
-      outline: none;
-      transition: border 0.3s;
-  }
-  .phone-input:focus {
-      border-color: #1877f2;
-  }
+        /* Results Section */
+        .results-area { display: none; margin-top: 30px; text-align: left; padding-bottom: 40px; }
 
-  .send-icon { color: #1877f2; background: none; border: none; font-weight: bold; font-size: 18px; cursor: pointer; }
+        .card {
+            background: var(--card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--gold);
+            padding: 15px; margin-bottom: 15px;
+            border-radius: 8px;
+            animation: fadeInUp 0.6s ease;
+            position: relative;
+        }
+        .card.special { border-left-color: var(--accent); background: rgba(40, 10, 20, 0.8); }
 
-	
-	<meta name="monetag" content="470edb2a0886be0674c6c57479f92df0">
-	
-</style>
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card-header { 
+            color: var(--gold); font-weight: bold; font-size: 0.95rem; 
+            margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; 
+            display: flex; justify-content: space-between;
+        }
+        .card-body { color: #eee; font-size: 1rem; line-height: 1.6; }
+        
+        .timeline-mark { color: var(--accent); font-weight: bold; }
+
+        canvas { display: none; }
+    </style>
 </head>
 <body>
 
-<div class="viral-container">
-   
-  <div class="header-img">
-      <img src="https://i.postimg.cc/k5Q2Hnyq/Gemini-Generated-Image-stqclxstqclxstqc.jpg">
-  </div>
+    <div class="app-frame">
+        <header>
+            <h1>රාජකීය හස්ත රේඛා</h1>
+            <p style="color:#aaa; font-size:0.8rem;">Indian Vedic Palmistry Engine</p>
+        </header>
 
-  <div class="content-body">
-     
-    <div id="step-1">
-      <h2>Valentine Data Gift (30GB)</h2>
-      <p>30GB Data ලාබා ගැනීමට ඔබ සුදුසු දැයි පරීක්ශා කිරීමට ඔබගේ phone number එක ඇතුලත් කර Continue button එක Click කරන්න.</p>
-      
-      <input type="tel" id="mobileNumber" class="phone-input" placeholder="ඔබගේ දුරකථන අංකය ඇතුලත් කරන්න (07X...)" required>
+        <label class="scanner-box">
+            <img id="previewImg">
+            <div class="upload-text" id="placeholder">
+                <span class="icon">🕉️</span>
+                <p>Click to Upload Hand</p>
+                <p style="font-size:0.7rem; opacity:0.7;">(වම් හෝ දකුණු අතේ ඡායාරූපයක්)</p>
+            </div>
+            <input type="file" id="fileInput" accept="image/*" style="display:none;" onchange="processFile(this)">
+        </label>
 
-      <button class="btn btn-continue" onclick="goToStep2()">Continue ➤</button>
+        <div id="status" style="margin-top:10px; font-size:0.8rem; color:#aaa;">System Ready</div>
+        
+        <div class="share-progress-container" id="shareProgressBox">
+            <div class="share-progress-fill" id="shareProgressBar"></div>
+        </div>
+
+        <div class="loader-container" id="loader">
+            <div class="loader-bar" id="loaderBar"></div>
+        </div>
+
+        <button class="btn-gold" id="analyzeBtn" onclick="handleShareLogic()">
+            අනාගතය බලන්න (Analyze)
+        </button>
+
+        <div class="results-area" id="results"></div>
     </div>
 
-    <div id="loading-screen" class="loader-container">
-      <div class="spinner"></div>
-      <div class="loading-text">Verifying Eligibility...</div>
-    </div>
+    <canvas id="canvas"></canvas>
 
-    <div id="step-2">
-      <h2 style="color: #000000;">30GB සඳහා ​ඔබ සුදුසුකම් ලබා ඇත.</h2>
-		<h3 style="color: #FF0000;">(පහත උපදෙස් කියවීම අනිවාර්ය වේ.)</h3>
-      <p style="font-size: 15px; text-align: left;">
-        🔴 WhatsApp <b>Group 3</b> කට හෝ <b>contact 7</b> කට මෙය share කරන්න. (Share කිරීමට පහත ඇති <b>"Share on WhatsApp"</b> අයිකනය මත ක්ලික් කරන්න).<br><br>
-🔴 පසුව දිස්වන <b>"Get Free Gift"</b> යන බටනය <b>CLICK</b> කරන්න<br><br>
-🔴 ඉන්පසු දිස්වන තිරයට ඔබගේ <b>නම්බරය</b> ලබා දීමෙන් පසුව එම නම්බරය වෙත පැය 12 ක් ඇතුලත Reload ලෙස ලැබෙනු ඇ​ත</p>
-       
-      <div class="progress-wrapper" id="progressBox">
-        <div class="progress-bar" id="progressBar"></div>
-      </div>
-      <div style="font-weight: bold; color: #1877f2; margin-bottom: 10px;" id="progressText">0% Completed</div>
+    <script>
+        // ===============================================
+        // 🔮 MAHA-RAJA ENGINE
+        // ===============================================
 
-      <button class="btn btn-whatsapp" onclick="shareClick()">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
-        Share on WhatsApp
-      </button>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const status = document.getElementById('status');
+        
+        // Share Logic Variables
+        let shareCount = 0;
+        const requiredShares = 3;
 
-      <a href="https://omg10.com/4/10589692" id="finalLink" target="_blank" style="text-decoration: none;">
-        <button class="btn btn-unlock" id="unlockBtn">🔒 Get Free 30GB Data</button>
-      </a>
-       
-      <p style="font-size: 13px; margin-top: 15px;">
-		  කරුනා කර share කිරීමෙන් පසුව මෙම button එක click කරන්න<br>
-		  (Enter your details on the next page to claim your gift.)</p>
-    </div>
+        let karma = { shape: 0, heart: 0, head: 0, fate: 0, special: 0, wrist: 0 };
 
-  </div>
+        const DB = {
+            Shapes: [
+                { t: "Earth Hand (පෘථිවි)", d: "චතුරස්‍රාකාර අල්ලක් සහ කෙටි ඇඟිලි. ඔබ ඉතා ප්‍රායෝගික, වගකිවයුතු සහ වෙහෙස මහන්සි වී වැඩ කරන අයෙකි." },
+                { t: "Air Hand (වායු)", d: "දිගු ඇඟිලි සහ චතුරස්‍රාකාර අල්ලක්. ඔබ සමාජශීලී, බුද්ධිමත් සහ නව අදහස් වලින් පිරුණු අයෙකි." },
+                { t: "Fire Hand (අග්නි)", d: "දිගු අල්ලක් සහ කෙටි ඇඟිලි. ඔබ නායකත්ව ගුණ ඇති, ඉතා උද්යෝගිමත් සහ ධෛර්යවන්ත අයෙකි." },
+                { t: "Water Hand (ජල)", d: "දිගු අල්ලක් සහ දිගු ඇඟිලි. ඔබ නිර්මාණශීලී, සංවේදී සහ කලාත්මක මනසක් ඇති අයෙකි." }
+            ],
+            SpecialMarks: [
+                { t: "Fish Sign (මත්ස්‍ය ලාංඡනය)", d: "අතේ අග 'මාළුවෙකුගේ' සලකුණක් දිස්වේ. මෙය මහා ධන යෝගයකි. මැදි වයසේදී විශාල ධනයක් සහ සාර්ථකත්වයක් ලැබේ." },
+                { t: "Lotus Sign (පද්ම ලාංඡනය)", d: "නෙළුම් මලක හැඩය දිස්වේ. මෙය රාජ යෝගයකි. ඔබ සමාජයේ ඉතා ඉහළ පිළිගැනීමක් සහ ගෞරවයක් ලබයි." },
+                { t: "Conch Sign (ශංඛ ලාංඡනය)", d: "හක්ගෙඩියක සලකුණක් ඇත. ඔබ ඉතා උගත්, බුද්ධිමත් සහ ප්‍රඥාවන්ත අයෙකි." },
+                { t: "Trident (ත්‍රිශූලය)", d: "දෛව රේඛාව අග ත්‍රිශූලයක් මෙන් බෙදී ඇත. මෙය බලය සහ කීර්තිය ගෙන දෙන මහා වාසනාවකි." }
+            ],
+            Heart: [
+                "හෘද රේඛාව දබර ඇඟිල්ල යටින් පටන් ගනී: ඔබ ආදරයේදී ඉතා අවංක සහ තෘප්තිමත් අයෙකි.",
+                "හෘද රේඛාව මැද ඇඟිල්ල යටින් පටන් ගනී: ආදරයේදී තරමක් ආත්මාර්ථකාමී විය හැක.",
+                "හෘද රේඛාව ඇඟිලි දෙකක් අතරින් පටන් ගනී: ඔබ අනුන් ගැන සිතන, කරුණාවන්ත අයෙකි.",
+                "හෘද රේඛාව දිගු සහ වක්‍ර වී ඇත: ඔබ හැඟීම් ප්‍රකාශ කිරීමට බිය නැති අයෙකි."
+            ],
+            Fate: [
+                { age: "28", pred: "රැකියාවේ ස්ථාවරත්වයක් ලැබේ. ඔබේ උත්සාහයෙන් දියුණු වේ (Self-made)." },
+                { age: "32", pred: "විවාහය හෝ පවුලේ දියුණුවක්. හදිසි ධන ලාභයක් ලැබීමට ඉඩ ඇත." },
+                { age: "35", pred: "ඉඩම් හෝ නිවාස හිමිකාරීත්වය ලැබේ. සමාජයේ ගෞරවය වැඩි වේ." },
+                { age: "45", pred: "සන්සුන් සහ සැපවත් ජීවිතයක්. දරුවන්ගේ දියුණුව දැක සතුටු විය හැක." }
+            ],
+            Bracelets: [
+                "මැණික් කටුවේ රේඛා පැහැදිලිය: නිරෝගී සහ දිගු ජීවිතයක් හිමි වේ.",
+                "මැණික් කටුවේ රේඛා ත්‍රිත්වයක් ඇත: ධනය, සෞඛ්‍යය සහ සතුට පිරි ජීවිතයක්. (Wealth & Health)",
+                "මැණික් කටුවේ රේඛා කැඩී ඇත: තරුණ වියේදී බාධක ඇති වුවද මැදි වයසේදී ජය ගනී.",
+                "රේඛා සඳු මණ්ඩලයට විහිදේ: විදෙස් ගත වීමේ වාසනාව ඇත (Foreign Travel)."
+            ]
+        };
 
-  <div class="comments-section">
-    <div class="comment-header">
-      <span>Comments</span>
-      <span>2,834 comments</span>
-    </div>
+        function processFile(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                status.innerText = "Analyzing Biometrics...";
+                status.style.color = "#FFD700";
 
-    <div class="comment-row">
-      <img src="https://i.pinimg.com/736x/fb/85/4f/fb854f62e557c5f3b84b351ade17fa08.jpg" class="avatar">
-      <div class="bubble">
-        <span class="user-name">Janaka Prasade</span>
-        <span class="user-text">මට 30GB හම්බ උනා, ජයවේවා
-</span>
-      </div>
-    </div>
-    <div class="comment-actions">
-      <span>Like</span> <span>Reply</span> <span>2m</span>
-    </div>
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const preview = document.getElementById('previewImg');
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                        document.getElementById('placeholder').style.display = 'none';
+                        calculateKarma(img, file.size);
+                    }
+                    img.src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
 
-    <div class="comment-row reply-row">
-      <img src="https://i.pinimg.com/736x/d8/49/3a/d8493ac925b717b4da02f545f7e99004.jpg" class="avatar">
-      <div class="bubble">
-        <span class="user-name">kavindu wijayawardhana</span>
-        <span class="user-text">ow, mamath hithuwe mekt anit ewa wage boru kiyala, hbay meka mt attatma labuna.</span>
-      </div>
-    </div>
-    <div class="comment-actions" style="margin-left: 96px;">
-      <span>Like</span> <span>Reply</span> <span>1m</span>
-    </div>
+        function calculateKarma(img, seed) {
+            try {
+                const scale = Math.min(1, 300 / img.width);
+                canvas.width = img.width * scale;
+                canvas.height = img.height * scale;
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                
+                const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+                let brightness = 0;
+                let r_total = 0;
+                
+                for(let i=0; i<data.length; i+=40) {
+                    r_total += data[i];
+                    brightness += (data[i] + data[i+1] + data[i+2]) / 3;
+                }
+                const avg = brightness / (data.length / 40);
+                const redAvg = r_total / (data.length / 40);
+                
+                karma.shape = Math.floor(avg) % 4;
+                karma.heart = Math.floor(redAvg) % 4;
+                karma.fate = Math.floor(avg + redAvg) % 4;
+                karma.special = Math.floor(avg * 1.5) % 4;
+                karma.wrist = Math.floor(redAvg * 2) % 4;
 
-    <div class="comment-row">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsyMWXmbJlE28-CN7wLK-_Ezbyqx-7Z63a_w&s" class="avatar">
-      <div class="bubble">
-        <span class="user-name">Sanduni Gamage</span>
-        <span class="user-text">හම්බ උනා happy valentine &nbsp;🙏🏻🙏🏻🙏🏻&nbsp;
-        </span>
-      </div>
-    </div>
-    <div class="comment-actions">
-      <span>Like</span> <span>Reply</span> <span>15m</span>
-    </div>
+            } catch (e) {
+                karma.shape = seed % 4;
+                karma.heart = (seed * 2) % 4;
+                karma.fate = (seed * 3) % 4;
+                karma.special = (seed * 5) % 4;
+                karma.wrist = (seed * 7) % 4;
+            }
 
-    <div class="comment-row">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX0C3NX-P4Nrs8bHZWsTOX_qMAgy_Mr3C6sw&s" class="avatar">
-      <div class="bubble">
-        <span class="user-name">Kasun Sampath</span>
-        <span class="user-text">හරියට කරගන්න තේරෙන්නෙ නැති අයට, මුලින්ම continue button එක ඔබන්න, ඊට පස්සේ ඔයාලගෙ whatsapp groups 3 කට හරි contacts 7 කට හරි ශෙයා කරන්න. ඊට පස්සෙ get free ක්ලික් කරල නම්බර්එක දෙන්න, මට විනාඩි 10න් හම්බ උනා (sms ekak ewi)
-</span>
-      </div>
-    </div>
-    <div class="comment-actions">
-      <span>Like</span> <span>Reply</span> <span>45m</span>
-    </div>
+            status.innerText = "Scan Complete.";
+            status.style.color = "#4ade80";
+            
+            // Activate button & Show Progress Bar container
+            analyzeBtn.classList.add("active");
+            document.getElementById('shareProgressBox').style.display = 'block';
+            
+            // Reset state
+            shareCount = 0;
+            updateShareUI();
+        }
 
-    <div class="comment-row reply-row">
-      <img src="https://i.pinimg.com/736x/37/22/f0/3722f0bcc19589d74a8782d4fc7ba5fd.jpg" class="avatar">
-      <div class="bubble">
-        <span class="user-name">Sandun de silva</span>
-        <span class="user-text">godak pin oyata mtt hmba una oya kiypu widiytma kra mn ❤️</span>
-      </div>
-    </div>
-    <div class="comment-actions" style="margin-left: 96px;">
-      <span>Like</span> <span>Reply</span> <span>10m</span>
-    </div>
+        function handleShareLogic() {
+            if (shareCount < requiredShares) {
+                // 1. Open WhatsApp
+                const siteUrl = window.location.href; 
+                const shareText = `මගේ අතේ රේඛා බැලුවා, මාරම ඇත්ත.. ඔයත් බලන්න! 👇\n${siteUrl}`;
+                window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, '_blank');
+                
+                // 2. Increment & Update UI
+                shareCount++;
+                updateShareUI();
 
-    <div class="input-area">
-        <div class="avatar" style="background: #007bff; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px;">You</div>
-        <input type="text" class="input-field" placeholder="Write a comment..." id="userComment">
-        <button class="send-icon" onclick="postComment()">➤</button>
-    </div>
+                // 3. If done, trigger results after delay
+                if (shareCount >= requiredShares) {
+                    setTimeout(showResults, 1000);
+                }
+            }
+        }
 
-  </div>
+        function updateShareUI() {
+            const percentage = (shareCount / requiredShares) * 100;
+            const bar = document.getElementById('shareProgressBar');
+            
+            // Update Bar Width
+            bar.style.width = percentage + "%";
 
-</div>
+            // Update Button Text
+            const remaining = requiredShares - shareCount;
+            if (remaining > 0) {
+                analyzeBtn.innerText = `WhatsApp Share (${shareCount}/${requiredShares})`;
+                status.innerText = `ප්‍රතිඵල බැලීමට තව ${remaining} වතාවක් Share කරන්න`;
+                status.style.color = "#FFD700";
+            } else {
+                analyzeBtn.innerText = "Processing...";
+                status.innerText = "Share සම්පූර්ණයි! අනාවැකිය සකසමින්...";
+                status.style.color = "#4ade80";
+            }
+        }
 
-<script>
-  // --- CONFIGURATION ---
-  var sharesRequired = 7; // Number of times they must share
-  var currentShares = 0;
-  // This message is what users will send to their friends
-  var shareMessage = "Look at this! I just got a free Valentine's gift from the Boux Avenue event. Check if you're eligible: ";
-   
-  function goToStep2() {
-    // --- ADDED VALIDATION HERE ---
-    var phoneInput = document.getElementById("mobileNumber");
-    if (phoneInput.value.trim() === "") {
-        alert("කරුණාකර ඔබේ දුරකථන අංකය ඇතුලත් කරන්න."); // Alert asking for number
-        phoneInput.focus();
-        return; // Stop function if empty
-    }
+        function showResults() {
+            // Hide Share Elements
+            analyzeBtn.style.display = 'none';
+            status.style.display = 'none';
+            document.getElementById('shareProgressBox').style.display = 'none';
+            
+            // Show Analysis Loader
+            document.getElementById('loader').style.display = 'block';
+            setTimeout(() => document.getElementById('loaderBar').style.width = "50%", 100);
+            setTimeout(() => document.getElementById('loaderBar').style.width = "100%", 1000);
 
-    // 1. Hide Step 1
-    document.getElementById("step-1").style.display = "none";
-     
-    // 2. Show Loading Screen
-    document.getElementById("loading-screen").style.display = "block";
-     
-    // 3. Wait 2 seconds, then show Step 2
-    setTimeout(function() {
-        document.getElementById("loading-screen").style.display = "none";
-        document.getElementById("step-2").style.display = "block";
-        document.getElementById("progressBox").style.display = "block";
-    }, 2000);
-  }
+            setTimeout(() => {
+                document.getElementById('loader').style.display = 'none';
+                renderCards();
+            }, 1500);
+        }
 
-  function shareClick() {
-    var url = window.location.href; 
-    var finalShareUrl = "https://wa.me/?text=" + encodeURIComponent(shareMessage + " " + url);
-     
-    // Open WhatsApp
-    window.open(finalShareUrl, '_blank');
+        function renderCards() {
+            const container = document.getElementById('results');
+            container.innerHTML = "";
+            container.style.display = 'block';
 
-    // Logic
-    if (currentShares < sharesRequired) {
-      currentShares++;
-    }
-     
-    // Update UI
-    var progressPercent = (currentShares / sharesRequired) * 100;
-    document.getElementById("progressBar").style.width = progressPercent + "%";
-    document.getElementById("progressText").innerText = Math.round(progressPercent) + "% Completed";
+            const shape = DB.Shapes[karma.shape];
+            addCard("🖐️ හස්තයේ ස්වභාවය (Nature)", `<strong>${shape.t}</strong><br>${shape.d}`);
 
-    // Check completion
-    if (currentShares >= sharesRequired) {
-      var btn = document.getElementById("unlockBtn");
-      btn.classList.add("active");
-      btn.innerHTML = "🔓 GET FREE GIFT";
-    } 
-  }
+            const mark = DB.SpecialMarks[karma.special];
+            addCard("✨ විශේෂ ලාංඡනය (Special Sign)", `<strong>${mark.t}</strong><br>${mark.d}`, true);
 
-  function postComment() {
-      var input = document.getElementById("userComment");
-      if(input.value.trim() !== "") {
-          alert("Comment Posted!");
-          input.value = "";
-      }
-  }
-</script>
+            addCard("❤️ හෘද රේඛාව (Love)", DB.Heart[karma.heart]);
 
+            const future = DB.Fate[karma.fate];
+            const timelineHTML = `
+                <div style="margin-bottom:8px;">
+                    <span class="timeline-mark">වයස ${future.age}:</span> ${future.pred}
+                </div>
+                <div style="font-size:0.9rem; color:#aaa; font-style:italic;">
+                    *මෙය දෛව රේඛාව සහ ජීවන රේඛාව අනුව ගණනය කරන ලදී.
+                </div>
+            `;
+            addCard("🔮 අනාගත අනාවැකිය (Future)", timelineHTML);
+
+            addCard("🎗️ මැණික් කටුවේ රේඛා (Wealth)", DB.Bracelets[karma.wrist]);
+
+            // ===========================================
+            // LINKED BUTTON 1: Check Another Person
+            // ===========================================
+            const btn = document.createElement('button');
+            btn.className = "btn-gold active";
+            btn.style.marginTop = "20px";
+            btn.style.background = "#222";
+            btn.style.color = "#fff";
+            btn.innerText = "වෙනත් අයෙකුගේ පරීක්ෂා කරන්න";
+            // Redirect to URL
+            btn.onclick = () => window.location.href = "https://omg10.com/4/10589692";
+            container.appendChild(btn);
+
+            // ===========================================
+            // LINKED BUTTON 2: More Result
+            // ===========================================
+            const moreResBtn = document.createElement('button');
+            moreResBtn.className = "btn-gold active";
+            moreResBtn.style.marginTop = "15px";
+            moreResBtn.style.background = "linear-gradient(90deg, #ff0055, #800020)";
+            moreResBtn.innerText = "තවත් අනාගතය බලන්න";
+            // Redirect to URL
+            moreResBtn.onclick = () => window.location.href = "https://omg10.com/4/10589692";
+            container.appendChild(moreResBtn);
+
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        function addCard(title, html, isSpecial = false) {
+            const div = document.createElement('div');
+            div.className = isSpecial ? 'card special' : 'card';
+            div.innerHTML = `<div class="card-header">${title}</div><div class="card-body">${html}</div>`;
+            document.getElementById('results').appendChild(div);
+        }
+
+    </script>
 </body>
 </html>
